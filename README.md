@@ -5,7 +5,7 @@ A fast and robust local file server written in pure Java.
 Compiled jarfiles can be found in the Releases tab.
 
 ### How to run
-- Normal version: Run `java -jar latte-v(version number)`.
+- Normal version: Run `java -jar latte-(version number)`.
 - GUI version: Just click on it!!!
 
 ## How to compile
