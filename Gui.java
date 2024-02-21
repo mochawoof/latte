@@ -1,4 +1,4 @@
-//latte Gui v1.0
+//latte Gui v1.1
 import javax.swing.*;
 import java.awt.event.*;
 public class Gui {
@@ -12,6 +12,7 @@ public class Gui {
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
         frame.setResizable(false);
+	frame.setTitle(Main.version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         

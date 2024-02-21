@@ -1,8 +1,10 @@
-//latte RequestHandler v1.0
+//latte RequestHandler v1.1
 import com.sun.net.httpserver.*;
 import java.io.*;
 import java.util.Date;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 public class RequestHandler implements HttpHandler {
     private HashMap<String, String> contentTypes = new HashMap<String, String>();
@@ -10,16 +12,24 @@ public class RequestHandler implements HttpHandler {
         String[] rawContentTypes = Helper.getResourceAsStringArray("content-types.csv");
         for (String type : rawContentTypes) {
             String[] row = type.trim().split(",");
-            contentTypes.put(row[1], row[0]);
+            contentTypes.put(row[0], row[1]);
+        }
+    }
+    private void sendMsg(String msg, HttpExchange exchange, int code, OutputStream out) {
+        try {
+            exchange.getResponseHeaders().set("Content-Type", "text/plain");
+            exchange.sendResponseHeaders(code, msg.length());
+            out.write(msg.getBytes());
+        } catch (IOException e) {
+            Main.error(e);
         }
     }
     public void handle(HttpExchange exchange) throws IOException {
         String uri = exchange.getRequestURI().normalize().getPath();
         System.out.println(new Date().toString() + ": " + uri);
-        
-        long responseLength = 0;
+
         int responseCode = 200;
-        String contentType = "text/plain";
+        String contentType = "application/octet-stream";
         OutputStream out = exchange.getResponseBody();
         File requested = new File(Main.path + uri);
         if (requested.exists() && !requested.isDirectory() && requested.canRead()) {
@@ -34,33 +44,27 @@ public class RequestHandler implements HttpHandler {
             
             exchange.getResponseHeaders().set("Content-Type", contentType);
             exchange.sendResponseHeaders(responseCode, requested.length());
-            BufferedReader reader = new BufferedReader(new FileReader(requested));
-            int read;
-            while ((read = reader.read()) != -1) {
-                out.write(read);
-            }
-            //unstable custom reader below
-            /*int length = 1000000;
-            int read;
-            int[] thisRead = new int[length];
-            int progress = 0;
-            while ((read = reader.read()) != -1) {
-                thisRead[progress] = read;
-                progress++;
-                if (progress == length) {
-                    for (int i=0; i < thisRead.length; i++) {
-                        out.write(thisRead[i]);
+            try (SeekableByteChannel channel = Files.newByteChannel(path, StandardOpenOption.READ)) {
+                int toAllocate = 1000;
+                int written = 0;
+                ByteBuffer buffer = ByteBuffer.allocate(toAllocate);
+                while (channel.read(buffer) != -1) {
+                    buffer.flip();
+                    byte[] bytes = buffer.array();
+                    if (channel.position() == channel.size()) { //manually write bytes when risk of going over channel size
+                        for (int i=0; written < channel.size(); i++) {
+                            out.write(bytes[i]);
+                            written++;
+                        }
+                    } else {
+                        out.write(bytes);
+                        written += bytes.length;
                     }
-                    thisRead = new int[length];
-                    progress = 0;
+                    buffer.clear();
                 }
+            } catch (Exception e) {
+                Main.error(e);
             }
-            if (progress < length) {
-                for (int i=0; i < thisRead.length; i++) {
-                        out.write(thisRead[i]);
-                }
-            }*/
-            
         } else if (requested.isDirectory() && uri.toString().endsWith("/") && requested.canRead()) {
             String listing = "<h2>" + requested.getAbsolutePath() + "</h2><ul>";
             listing += "<li><a href=\"../\">../</a></li>";
@@ -78,12 +82,7 @@ public class RequestHandler implements HttpHandler {
             exchange.sendResponseHeaders(responseCode, listing.length());
             out.write(listing.getBytes());
         } else {
-            String msg = "File not found!";
-            
-            exchange.getResponseHeaders().set("Content-Type", contentType);
-            exchange.sendResponseHeaders(responseCode, msg.length());
-            out.write(msg.getBytes());
-            responseCode = 404;
+            sendMsg("File not found!", exchange, 404, out);
         }
         
         out.flush();

@@ -1,4 +1,4 @@
-//latte Main v1.0
+//latte Main v1.1
 import com.sun.net.httpserver.*;
 import java.net.InetSocketAddress;
 import java.io.*;
@@ -7,6 +7,7 @@ public class Main {
     public static String path = System.getProperty("user.dir");
     public static int port = 8000;
     public static HttpServer server;
+    public static String version = "latte v1.1";
     
     private static void parseArgs(String[] args) {
         if (args.length > 0) {
@@ -16,8 +17,15 @@ public class Main {
             }
         }
     }
+    public static void error(Exception e) {
+        System.out.println("ERROR:");
+        e.printStackTrace();
+        if (Gui.on) {
+            Gui.error(e.toString());
+        }
+    }
     public static void main(String[] args) {
-        System.out.println("Latte v1.0");
+        System.out.println(version);
         System.out.println("----------");
         Scanner scanner = new Scanner(System.in);
         parseArgs(args);
@@ -47,11 +55,7 @@ public class Main {
                 server.stop(0);
             }
         } catch (Exception e) {
-            System.out.println("ERROR:");
-            e.printStackTrace();
-            if (Gui.on) {
-                Gui.error(e.toString());
-            }
+            error(e);
         }
     }
 }
