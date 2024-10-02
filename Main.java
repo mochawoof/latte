@@ -7,7 +7,7 @@ public class Main {
     public static String path = System.getProperty("user.dir");
     public static int port = 8000;
     public static HttpServer server;
-    public static String version = "1.1";
+    public static String version = "1.2";
     
     private static void parseArgs(String[] args) {
         if (args.length > 0) {
