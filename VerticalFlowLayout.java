@@ -1,11 +1,10 @@
+// Modified to be offset by + 30 pixels
         
 //----------------------------------------------------
 // Image Mover
 // (C) Vassili Dzuba, 2000
 // distributed under the Artistic License
 //----------------------------------------------------
-
-//package modrcon;
 
 import java.awt.LayoutManager;
 import java.awt.Component;

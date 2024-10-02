@@ -1,4 +1,3 @@
-//latte Main v1.1
 import com.sun.net.httpserver.*;
 import java.net.InetSocketAddress;
 import java.io.*;
@@ -7,7 +6,7 @@ public class Main {
     public static String path = System.getProperty("user.dir");
     public static int port = 8000;
     public static HttpServer server;
-    public static String version = "1.3";
+    public static String version = "1.4";
     
     private static void parseArgs(String[] args) {
         if (args.length > 0) {
@@ -18,7 +17,7 @@ public class Main {
         }
     }
     public static void error(Exception e) {
-        System.out.println("ERROR:");
+        System.out.println("Error:");
         e.printStackTrace();
         if (Gui.on) {
             Gui.error(e.toString());

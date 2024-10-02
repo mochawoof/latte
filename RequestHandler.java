@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class RequestHandler implements HttpHandler {
     private HashMap<String, String> contentTypes = new HashMap<String, String>();
     public RequestHandler() {
-        String[] rawContentTypes = Helper.getResourceAsStringArray("content-types.csv");
+        String[] rawContentTypes = Resources.getAsString("content-types.csv").split("\n");
         for (String type : rawContentTypes) {
             String[] row = type.trim().split(",");
             contentTypes.put(row[0], row[1]);

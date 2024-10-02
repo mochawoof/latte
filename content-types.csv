@@ -32,6 +32,7 @@
 .midi,audio/midi
 .mid,audio/midi
 .mjs,text/javascript
+.cjs,text/javascript
 .mp3,audio/mpeg
 .mp4,video/mp4
 .mpeg,video/mpeg
