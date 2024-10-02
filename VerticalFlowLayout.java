@@ -294,7 +294,7 @@ public class VerticalFlowLayout implements LayoutManager, java.io.Serializable {
                 break;
             }
 
-            m.setLocation(x, y + 25);
+            m.setLocation(x, y + 30);
 
             y += d.getHeight();
 

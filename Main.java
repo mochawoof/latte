@@ -7,7 +7,7 @@ public class Main {
     public static String path = System.getProperty("user.dir");
     public static int port = 8000;
     public static HttpServer server;
-    public static String version = "1.2";
+    public static String version = "1.3";
     
     private static void parseArgs(String[] args) {
         if (args.length > 0) {
@@ -25,8 +25,7 @@ public class Main {
         }
     }
     public static void main(String[] args) {
-        System.out.println(version);
-        System.out.println("----------");
+        System.out.println("Latte " + version);
         Scanner scanner = new Scanner(System.in);
         parseArgs(args);
         System.out.println("Starting...");
