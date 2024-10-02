@@ -1,5 +1,6 @@
 //latte Gui v1.1
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 public class Gui {
     public static boolean on = false;
@@ -10,17 +11,31 @@ public class Gui {
     public static void main(String[] args) {
         on = true;
         JFrame frame = new JFrame();
-        frame.setSize(200, 200);
+        frame.setSize(350, 250);
         frame.setResizable(false);
-	frame.setTitle(Main.version);
+        frame.setTitle("Latte " + Main.version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            SwingUtilities.updateComponentTreeUI(frame);
+        } catch (Exception e) {
+            Main.error(e);
+        }
+        
         frame.setVisible(true);
         
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.PAGE_AXIS));
+        JPanel panel = new JPanel();
+        frame.add(panel, BorderLayout.CENTER);
+        panel.setLayout(new VerticalFlowLayout(FlowLayout.LEFT, VerticalFlowLayout.TOP, 5, 5));
+        panel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
+        
         JLabel pathLabel = new JLabel("Path:");
         JTextField pathField = new JTextField(Main.path);
+        pathField.setPreferredSize(new Dimension(300, pathField.getPreferredSize().height));
         JLabel portLabel = new JLabel("Port:");
         JTextField portField = new JTextField(Integer.toString(Main.port));
+        portField.setPreferredSize(new Dimension(300, portField.getPreferredSize().height));
         JButton startStopButton = new JButton("Start server");
         startStopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -34,11 +49,11 @@ public class Gui {
                 }
             }
         });
-        frame.add(pathLabel);
-        frame.add(pathField);
-        frame.add(portLabel);
-        frame.add(portField);
-        frame.add(startStopButton);
+        panel.add(pathLabel);
+        panel.add(pathField);
+        panel.add(portLabel);
+        panel.add(portField);
+        panel.add(startStopButton);
         
         frame.revalidate();
         frame.repaint();
