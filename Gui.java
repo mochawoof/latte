@@ -11,7 +11,6 @@ public class Gui {
     public static void main(String[] args) {
         on = true;
         JFrame frame = new JFrame();
-        frame.setSize(350, 250);
         frame.setResizable(false);
         frame.setTitle("Latte " + Main.version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +26,7 @@ public class Gui {
         
         JPanel panel = new JPanel();
         frame.add(panel, BorderLayout.CENTER);
-        panel.setLayout(new VerticalFlowLayout(FlowLayout.LEFT, VerticalFlowLayout.TOP, 5, 5));
+        panel.setLayout(new VerticalFlowLayout(VerticalFlowLayout.LEFT, VerticalFlowLayout.LEFT, 5, 5));
         panel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
         
         JLabel pathLabel = new JLabel("Path:");
@@ -55,6 +54,7 @@ public class Gui {
         panel.add(portField);
         panel.add(startStopButton);
         
+        frame.pack();
         frame.revalidate();
         frame.repaint();
     }
