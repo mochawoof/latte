@@ -1,5 +1,5 @@
 # latte
-A fast and robust local file server written in pure Java.
+An easy, drop-in local server solution for any platform.
 
 Releases include executable JARs.
 
