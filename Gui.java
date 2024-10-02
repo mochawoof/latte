@@ -22,8 +22,6 @@ public class Gui {
             Main.error(e);
         }
         
-        frame.setVisible(true);
-        
         JPanel panel = new JPanel();
         frame.add(panel, BorderLayout.CENTER);
         panel.setLayout(new VerticalFlowLayout(VerticalFlowLayout.LEFT, VerticalFlowLayout.LEFT, 5, 5));
@@ -55,7 +53,6 @@ public class Gui {
         panel.add(startStopButton);
         
         frame.pack();
-        frame.revalidate();
-        frame.repaint();
+        frame.setVisible(true);
     }
 }
